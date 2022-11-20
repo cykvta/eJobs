@@ -1,7 +1,7 @@
 package icu.cykuta.ejobs.utils;
 
 import icu.cykuta.ejobs.Main;
-import icu.cykuta.ejobs.counters.CounterType;
+import icu.cykuta.ejobs.file.counters.CounterType;
 import icu.cykuta.ejobs.data.Data;
 import icu.cykuta.ejobs.jobs.Job;
 import icu.cykuta.ejobs.jobs.Requirement;
@@ -73,7 +73,7 @@ public class PlayerAdapter {
                 CounterType type = requirement.getCounterType();
                 String material = requirement.getMaterial().toString();
 
-                if (Data.getPlayerCounter(player, type, material) < requirement.getAmount()) return false;
+                if (Data.getCounterFromFile(player, type, material) < requirement.getAmount()) return false;
             }
         }
         return true;

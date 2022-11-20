@@ -1,4 +1,4 @@
-package icu.cykuta.ejobs.counters;
+package icu.cykuta.ejobs.file.counters;
 
 import icu.cykuta.ejobs.data.Data;
 import org.bukkit.Material;
@@ -19,7 +19,7 @@ public class CounterEvent implements EventListener, Listener {
      * smelt
      * farm
      * kill
-     * Hacer pociones
+     * Brew
      */
 
     /**
@@ -31,21 +31,21 @@ public class CounterEvent implements EventListener, Listener {
         Material blockType = e.getBlock().getType();
         CounterType counterType = CounterType.BREAK;
 
-        int counter = Data.getPlayerCounter(player, counterType, blockType.toString());
-        Data.savePlayerCounter(player, counterType, blockType.toString(), counter+1);
+        int counter = Data.getCounter(player, blockType.toString(), counterType);
+        Data.setCounter(player, counterType, blockType.toString(), counter+1);
     }
 
     /**
      * Player place block counter
      */
     @EventHandler
-    public void playerBreakBlock(BlockPlaceEvent e){
+    public void playerPlaceBlock(BlockPlaceEvent e){
         Player player = e.getPlayer();
         Material blockType = e.getBlock().getType();
         CounterType counterType = CounterType.PLACE;
 
-        int counter = Data.getPlayerCounter(player, counterType, blockType.toString());
-        Data.savePlayerCounter(player, counterType, blockType.toString(), counter+1);
+        int counter = Data.getCounter(player, blockType.toString(), counterType);
+        Data.setCounter(player, counterType, blockType.toString(), counter+1);
     }
 
     /**
@@ -57,8 +57,8 @@ public class CounterEvent implements EventListener, Listener {
         Material itemType = e.getRecipe().getResult().getType();
         CounterType counterType = CounterType.CRAFT;
 
-        int counter = Data.getPlayerCounter(player, counterType, itemType.toString());
-        Data.savePlayerCounter(player, counterType, itemType.toString(), counter+1);
+        int counter = Data.getCounter(player, itemType.toString(), counterType);
+        Data.setCounter(player, counterType, itemType.toString(), counter+1);
     }
 
     /**
@@ -70,8 +70,8 @@ public class CounterEvent implements EventListener, Listener {
         Material itemType = e.getItem().getType();
         CounterType counterType = CounterType.ENCHANT;
 
-        int counter = Data.getPlayerCounter(player, counterType, itemType.toString());
-        Data.savePlayerCounter(player, counterType, itemType.toString(), counter+1);
+        int counter = Data.getCounter(player, itemType.toString(), counterType);
+        Data.setCounter(player, counterType, itemType.toString(), counter+1);
     }
 
 

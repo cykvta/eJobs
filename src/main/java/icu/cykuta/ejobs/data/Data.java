@@ -1,7 +1,8 @@
 package icu.cykuta.ejobs.data;
 
 import icu.cykuta.ejobs.Main;
-import icu.cykuta.ejobs.counters.CounterType;
+import icu.cykuta.ejobs.file.counters.Counter;
+import icu.cykuta.ejobs.file.counters.CounterType;
 import icu.cykuta.ejobs.file.data.DataConfig;
 import icu.cykuta.ejobs.jobs.Job;
 import icu.cykuta.ejobs.utils.PlayerAdapter;
@@ -14,39 +15,47 @@ import java.util.Map;
 
 public class Data {
     public static ArrayList<PlayerAdapter> playerHolder = new ArrayList<>();
-    public static Map<Player, Map<CounterType, Integer> > counters = new HashMap<>();
+    public static Map<Player, ArrayList<Counter> > counters = new HashMap<>();
 
     /**
      * Set value to a player's counter.
      * @param player Player
-     * @param cType CounterType
+     * @param counterType Counter type
+     * @param material material string
      * @param value int
      */
-    public static void setCounter(Player player ,CounterType cType, int value){
-        Map<CounterType, Integer> map = counters.get(player);
+    public static void setCounter(Player player, CounterType counterType, String material, int value){
+        ArrayList<Counter> counterList = counters.computeIfAbsent(player, k -> new ArrayList<>());
 
-        if (map != null) {
-            map.put(cType, value);
-            return;
+        for (Counter counter : counters.get(player)) {
+            if ( (counter.getType() == counterType) && (counter.getMaterial() == material) ) {
+                counter.setValue(value);
+                return;
+            }
         }
 
-        Map<CounterType, Integer> counterMap = new HashMap<>();
-        counterMap.put(cType, value);
-        counters.put(player, counterMap);
-
+        counterList.add(new Counter(counterType, material, value));
     }
 
     /**
      * Get value from a player's counter.
      * @param player player
-     * @param cType CounterType
+     * @param material material string
+     * @param counterType counter type
      * @return int
      */
-    public static int getCounter(Player player, CounterType cType){
-        Map<CounterType, Integer> map = counters.get(player);
-        if (map == null) return 0;
+    public static int getCounter(Player player, String material, CounterType counterType){
+        ArrayList<Counter> countersList = counters.get(player);
 
-        return map.get(cType);
+        if (countersList != null){
+            for (Counter counter : countersList) {
+                if (counter.getType() == counterType && counter.getMaterial() == material) {
+                    return counter.getValue();
+                }
+            }
+        }
+
+        return 0;
     }
 
     /**
@@ -79,7 +88,8 @@ public class Data {
         String uuid = player.getPlayer().getUniqueId().toString();
         DataConfig dataFile = Main.getPlugin().getCfg().getDataConfig();
 
-        dataFile.getData().set(uuid, null);
+        dataFile.getData().set(uuid + ".job", null);
+        dataFile.getData().set(uuid + ".job-level", null);
         playerHolder.remove(player);
         dataFile.saveData();
     }
@@ -103,7 +113,7 @@ public class Data {
      * @param counterType CounterType
      * @param value int
      */
-    public static void savePlayerCounter(Player player, CounterType counterType, String material, int value) {
+    public static void setCounterToFile(Player player, CounterType counterType, String material, int value) {
         String uuid = player.getPlayer().getUniqueId().toString();
         DataConfig dataFile = Main.getPlugin().getCfg().getDataConfig();
 
@@ -117,7 +127,7 @@ public class Data {
      * @param counter CounterType
      * @return counter value or null
      */
-    public static int getPlayerCounter(Player player, CounterType counter, String materialString) {
+    public static int getCounterFromFile(Player player, CounterType counter, String materialString) {
         String uuid = player.getPlayer().getUniqueId().toString();
         DataConfig dataFile = Main.getPlugin().getCfg().getDataConfig();
 

@@ -1,7 +1,7 @@
 package icu.cykuta.ejobs.jobs;
 
 import icu.cykuta.ejobs.Main;
-import icu.cykuta.ejobs.counters.CounterType;
+import icu.cykuta.ejobs.file.counters.CounterType;
 import icu.cykuta.ejobs.file.ConfigManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;

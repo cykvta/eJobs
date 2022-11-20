@@ -1,4 +1,4 @@
-package icu.cykuta.ejobs.counters;
+package icu.cykuta.ejobs.file.counters;
 
 public enum CounterType {
     BREAK("break"),

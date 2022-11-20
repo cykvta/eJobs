@@ -3,7 +3,7 @@ package icu.cykuta.ejobs;
 import icu.cykuta.ejobs.commands.CommandLoader;
 import icu.cykuta.ejobs.data.Data;
 import icu.cykuta.ejobs.data.DataEvents;
-import icu.cykuta.ejobs.counters.CounterEvent;
+import icu.cykuta.ejobs.file.counters.CounterEvent;
 import icu.cykuta.ejobs.file.ConfigManager;
 import icu.cykuta.ejobs.jobs.JobLoader;
 import org.bukkit.plugin.PluginManager;

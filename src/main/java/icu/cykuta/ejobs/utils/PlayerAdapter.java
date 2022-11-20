@@ -62,8 +62,10 @@ public class PlayerAdapter {
      */
     public boolean canLevelUp() {
         if (job == null) return false;
-        if (job.getMaxLevel() >= jobLevel) return false;
+        return job.getMaxLevel() < jobLevel;
+    }
 
+    public boolean verifyRequirements(){
         for (int i = 1; i < jobLevel + 1; i++){
             ArrayList<Requirement> requirements = job.getRequirements().get(i);
 
@@ -74,7 +76,6 @@ public class PlayerAdapter {
                 if (Data.getPlayerCounter(player, type, material) < requirement.getAmount()) return false;
             }
         }
-
         return true;
     }
 

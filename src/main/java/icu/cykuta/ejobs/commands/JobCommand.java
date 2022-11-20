@@ -83,6 +83,11 @@ public class JobCommand implements CommandExecutor {
                 return true;
             }
 
+            if (!playerAdapter.verifyRequirements()) {
+                playerAdapter.sendMessage("&cYou don't have the requirements to level up.");
+                return true;
+            }
+
             playerAdapter.levelUp();
             Data.savePlayerData(playerAdapter);
             playerAdapter.sendMessage("&aYou have leveled up!");

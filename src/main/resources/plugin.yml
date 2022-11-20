@@ -1,0 +1,10 @@
+name: eJobs
+version: '${project.version}'
+main: icu.cykuta.ejobs.Main
+api-version: 1.19
+authors: [ cykvta ]
+
+commands:
+  job:
+    description: job command
+    usage: /job <join/leave/levelup> <job>

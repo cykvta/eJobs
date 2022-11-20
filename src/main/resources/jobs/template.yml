@@ -1,0 +1,31 @@
+# Job data
+name: "Template"
+description: "Description of job"
+max-level: 3
+
+# Job levels list
+levels:
+  1:
+    requirements:
+      - "break:stone:100"
+      - "place:dirt:100"
+    permissions:
+      - "template.job.1"
+      - "template.job.2"
+      - "template.job.3"
+  2:
+    requirements:
+      - "break:stone:200"
+      - "place:dirt:200"
+    permissions:
+      - "template.job.1"
+      - "template.job.2"
+      - "template.job.3"
+  3:
+    requirements:
+      - "break:stone:300"
+      - "place:dirt:300"
+    permissions:
+      - "template.job.1"
+      - "template.job.2"
+      - "template.job.3"

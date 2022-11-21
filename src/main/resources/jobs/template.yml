@@ -3,29 +3,21 @@ name: "Template"
 description: "Description of job"
 max-level: 3
 
-# Job levels list
-levels:
-  1:
-    requirements:
-      - "break:stone:100"
-      - "place:dirt:100"
-    permissions:
-      - "template.job.1"
-      - "template.job.2"
-      - "template.job.3"
+levels: # Job levels list
+  1: # Level name must be a number
+    requirements: [] # Requirements to unlock this level, use [] for no requirements (The first level bypass this).
+    permissions: # List of permissions to give to player when he reaches this level. use [] for no permissions.
+      - "custom.perm.1"
+      - "custom.perm.2"
+      - "custom.perm.3"
   2:
     requirements:
       - "break:stone:200"
       - "place:dirt:200"
-    permissions:
-      - "template.job.1"
-      - "template.job.2"
-      - "template.job.3"
+    permissions: []
   3:
     requirements:
       - "break:stone:300"
       - "place:dirt:300"
     permissions:
-      - "template.job.1"
-      - "template.job.2"
-      - "template.job.3"
+      - "custom.perm.4"

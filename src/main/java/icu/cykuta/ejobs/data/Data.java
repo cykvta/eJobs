@@ -1,11 +1,12 @@
 package icu.cykuta.ejobs.data;
 
 import icu.cykuta.ejobs.Main;
-import icu.cykuta.ejobs.file.counters.Counter;
-import icu.cykuta.ejobs.file.counters.CounterType;
+import icu.cykuta.ejobs.counters.Counter;
+import icu.cykuta.ejobs.counters.CounterType;
 import icu.cykuta.ejobs.file.data.DataConfig;
 import icu.cykuta.ejobs.jobs.Job;
 import icu.cykuta.ejobs.utils.PlayerAdapter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
@@ -28,7 +29,7 @@ public class Data {
         ArrayList<Counter> counterList = counters.computeIfAbsent(player, k -> new ArrayList<>());
 
         for (Counter counter : counters.get(player)) {
-            if ( (counter.getType() == counterType) && (counter.getMaterial() == material) ) {
+            if ( (counter.getType() == counterType) && (counter.getMaterial().equals(material)) ) {
                 counter.setValue(value);
                 return;
             }
@@ -46,12 +47,11 @@ public class Data {
      */
     public static int getCounter(Player player, String material, CounterType counterType){
         ArrayList<Counter> countersList = counters.get(player);
+        if (countersList == null) return 0;
 
-        if (countersList != null){
-            for (Counter counter : countersList) {
-                if (counter.getType() == counterType && counter.getMaterial() == material) {
-                    return counter.getValue();
-                }
+        for (Counter counter : countersList) {
+            if (counter.getType() == counterType && counter.getMaterial().equals(material)) {
+                return counter.getValue();
             }
         }
 
@@ -117,7 +117,7 @@ public class Data {
         String uuid = player.getPlayer().getUniqueId().toString();
         DataConfig dataFile = Main.getPlugin().getCfg().getDataConfig();
 
-        dataFile.getData().set(uuid + ".counters." + counterType.toString() + "." + material, value);
+        dataFile.getData().set(uuid + ".counters." + counterType.toString() + "." + material, value == 0 ? null : value);
         dataFile.saveData();
     }
 
@@ -154,5 +154,33 @@ public class Data {
         for (PlayerAdapter player : Data.playerHolder) {
             Data.savePlayerData(player);
         }
+    }
+
+    /**
+     * get all player counters
+     */
+    public static void saveAllPlayerCounters() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            savePlayerCounter(player);
+        }
+    }
+
+    /**
+     * Save player counter from counters list on data.yml.
+     * @param player Player
+     */
+    public static void savePlayerCounter(Player player) {
+        for (CounterType type : CounterType.values()) {
+            ArrayList<Counter> counters = Data.counters.get(player);
+            if (counters == null) continue;
+
+            for (Counter counter : counters) {
+                String material = counter.getMaterial();
+                int value = Data.getCounter(player, material, type);
+                Data.setCounterToFile(player, type, material, value);
+            }
+        }
+
+        Data.counters.remove(player);
     }
 }

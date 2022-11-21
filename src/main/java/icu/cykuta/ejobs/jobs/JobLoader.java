@@ -1,7 +1,7 @@
 package icu.cykuta.ejobs.jobs;
 
 import icu.cykuta.ejobs.Main;
-import icu.cykuta.ejobs.file.counters.CounterType;
+import icu.cykuta.ejobs.counters.CounterType;
 import icu.cykuta.ejobs.file.ConfigManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -53,7 +53,7 @@ public class JobLoader {
 
                     CounterType reqType = CounterType.valueOf(rawType.toUpperCase());
                     int reqValue = Integer.parseInt(rawValue);
-                    Material reqMaterial = Material.getMaterial(rawMaterial);
+                    Material reqMaterial = Material.getMaterial(rawMaterial.toUpperCase());
 
                     Requirement requirement = new Requirement(reqType, reqMaterial, reqValue);
                     levelRequirements.add(requirement);

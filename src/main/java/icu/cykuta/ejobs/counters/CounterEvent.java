@@ -1,4 +1,4 @@
-package icu.cykuta.ejobs.file.counters;
+package icu.cykuta.ejobs.counters;
 
 import icu.cykuta.ejobs.data.Data;
 import org.bukkit.Material;

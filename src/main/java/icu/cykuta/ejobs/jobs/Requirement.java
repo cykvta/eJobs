@@ -1,6 +1,6 @@
 package icu.cykuta.ejobs.jobs;
 
-import icu.cykuta.ejobs.file.counters.CounterType;
+import icu.cykuta.ejobs.counters.CounterType;
 import org.bukkit.Material;
 
 public class Requirement {

@@ -1,4 +1,4 @@
-package icu.cykuta.ejobs.file.counters;
+package icu.cykuta.ejobs.counters;
 
 public class Counter {
     private final CounterType type;

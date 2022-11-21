@@ -1,4 +1,4 @@
-package icu.cykuta.ejobs.file.counters;
+package icu.cykuta.ejobs.counters;
 
 public enum CounterType {
     BREAK("break"),
@@ -8,15 +8,8 @@ public enum CounterType {
     SMELT("smelt"),
     FARM("farm"),
     KILL("kill"),
-    POTION("potion");
-
-    private final String value;
+    BREW("brew");
 
     CounterType(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
     }
 }

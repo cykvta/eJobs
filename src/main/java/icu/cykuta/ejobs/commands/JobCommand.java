@@ -1,5 +1,6 @@
 package icu.cykuta.ejobs.commands;
 
+import icu.cykuta.ejobs.Main;
 import icu.cykuta.ejobs.data.Data;
 import icu.cykuta.ejobs.jobs.Job;
 import icu.cykuta.ejobs.utils.Log;
@@ -7,8 +8,14 @@ import icu.cykuta.ejobs.utils.PlayerAdapter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class JobCommand implements CommandExecutor {
 
@@ -73,6 +80,7 @@ public class JobCommand implements CommandExecutor {
             if (args.length != 1) return false;
 
             Job job = playerAdapter.getJob();
+            int level = playerAdapter.getJobLevel();
 
             if (job == null) {
                 playerAdapter.sendMessage("&cYou are not in a job.");
@@ -83,7 +91,7 @@ public class JobCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!playerAdapter.verifyRequirements()) {
+            if (!playerAdapter.verifyRequirements(level + 1)) {
                 playerAdapter.sendMessage("&cYou don't have the requirements to level up.");
                 return true;
             }

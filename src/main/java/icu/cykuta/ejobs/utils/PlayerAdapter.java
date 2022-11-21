@@ -1,7 +1,7 @@
 package icu.cykuta.ejobs.utils;
 
 import icu.cykuta.ejobs.Main;
-import icu.cykuta.ejobs.file.counters.CounterType;
+import icu.cykuta.ejobs.counters.CounterType;
 import icu.cykuta.ejobs.data.Data;
 import icu.cykuta.ejobs.jobs.Job;
 import icu.cykuta.ejobs.jobs.Requirement;
@@ -62,20 +62,19 @@ public class PlayerAdapter {
      */
     public boolean canLevelUp() {
         if (job == null) return false;
-        return job.getMaxLevel() < jobLevel;
+        return job.getMaxLevel() > jobLevel;
     }
 
-    public boolean verifyRequirements(){
-        for (int i = 1; i < jobLevel + 1; i++){
-            ArrayList<Requirement> requirements = job.getRequirements().get(i);
+    public boolean verifyRequirements(int level){
+        Log.info("Level: " + level);
+        ArrayList<Requirement> requirements = job.getRequirements().get(level);
 
-            for (Requirement requirement : requirements){
-                CounterType type = requirement.getCounterType();
-                String material = requirement.getMaterial().toString();
-
-                if (Data.getCounterFromFile(player, type, material) < requirement.getAmount()) return false;
-            }
+        for (Requirement requirement : requirements){
+            CounterType type = requirement.getCounterType();
+            String material = requirement.getMaterial().toString();
+            if (Data.getCounterFromFile(player, type, material) < requirement.getAmount()) return false;
         }
+
         return true;
     }
 

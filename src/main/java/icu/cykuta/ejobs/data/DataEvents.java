@@ -1,10 +1,8 @@
 package icu.cykuta.ejobs.data;
 
 import icu.cykuta.ejobs.Main;
-import icu.cykuta.ejobs.file.counters.Counter;
-import icu.cykuta.ejobs.file.counters.CounterType;
+import icu.cykuta.ejobs.counters.CounterType;
 import icu.cykuta.ejobs.jobs.Job;
-import icu.cykuta.ejobs.utils.Log;
 import icu.cykuta.ejobs.utils.PlayerAdapter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,8 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import java.util.ArrayList;
 
 public class DataEvents implements Listener {
 
@@ -68,7 +64,7 @@ public class DataEvents implements Listener {
         FileConfiguration data = Main.getPlugin().getCfg().getDataConfig().getData();
 
         for (CounterType type : CounterType.values()) {
-            ConfigurationSection counters = data.getConfigurationSection(uuid + ".counters." + type.getValue());
+            ConfigurationSection counters = data.getConfigurationSection(uuid + ".counters." + type);
             if (counters == null) continue;
 
             for (String material : counters.getKeys(false)) {
@@ -83,17 +79,6 @@ public class DataEvents implements Listener {
      */
     @EventHandler
     public void leaveStoreCounter(PlayerQuitEvent e){
-        Player player = e.getPlayer();
-
-        for (CounterType type : CounterType.values()) {
-            ArrayList<Counter> counters = Data.counters.get(player);
-            if (counters == null) continue;
-            for (Counter counter : counters) {
-                String material = counter.getMaterial();
-                int value = Data.getCounter(player, material, type);
-                Data.setCounterToFile(player, type, material, value);
-                Data.counters.remove(player);
-            }
-        }
+        Data.savePlayerCounter(e.getPlayer());
     }
 }

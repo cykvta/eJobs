@@ -16,3 +16,6 @@ Download the latest build of the plugin and move it to the plugins folder on you
 ## Todo
 - Customized language file
 - More counters
+- More configuration options
+- Command permissions
+- Customizable job permissions

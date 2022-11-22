@@ -3,11 +3,8 @@ package icu.cykuta.ejobs.jobs;
 import icu.cykuta.ejobs.Main;
 import icu.cykuta.ejobs.counters.CounterType;
 import icu.cykuta.ejobs.file.ConfigManager;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.EntityType;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +27,7 @@ public class JobLoader {
             String jobName     = JobFile.getString("name");
             int maxLevel       = JobFile.getInt("max-level");
             String description = JobFile.getString("description");
+            String permission = JobFile.getString("permission");
 
             Map<Integer, List<String> > jobPermissions = new HashMap<>();
             Map<Integer, ArrayList<Requirement> > jobRequirements = new HashMap<>();
@@ -62,7 +60,7 @@ public class JobLoader {
             }
 
             // Create a new Job object and add it to the jobs list.
-            jobs.add( new Job(jobName, maxLevel, description, jobPermissions, jobRequirements) );
+            jobs.add( new Job(jobName, maxLevel, description, permission, jobPermissions, jobRequirements) );
         }
     }
 

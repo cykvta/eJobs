@@ -2,6 +2,7 @@
 name: "Template"
 description: "Description of job"
 max-level: 3
+permission: "job.template"
 
 levels: # Job levels list
   1: # Level name must be a number

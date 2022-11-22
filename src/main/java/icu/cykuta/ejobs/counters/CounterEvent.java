@@ -20,11 +20,6 @@ import org.bukkit.inventory.ItemStack;
 public class CounterEvent implements Listener {
 
     /**
-     * TODO:
-     * Brew
-     */
-
-    /**
      * Player break block counter
      */
     @EventHandler
@@ -128,26 +123,4 @@ public class CounterEvent implements Listener {
         int counter = Data.getCounter(player, counterType, result);
         Data.setCounter(player, counterType, result, counter + 1);
     }
-
-
-    /**
-     * Brewing counter
-     */
-//    @EventHandler
-//    public void playerBrewEvent(InventoryClickEvent e){
-//        if (!(e.getInventory() instanceof BrewerInventory)) return;
-//        Player player = (Player) e.getWhoClicked();
-//        BrewerInventory inventory = (BrewerInventory) e.getInventory();
-//        CounterType counterType = CounterType.BREW;
-//
-//        for(int i = 0; i < 3; i++){
-//            ItemStack item = inventory.getItem(i);
-//            if (item == null || !(item.getItemMeta() instanceof PotionMeta)) continue;
-//            PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
-//            PotionType type = potionMeta.getBasePotionData().getType();
-//
-//
-//        }
-//
-//    }
 }

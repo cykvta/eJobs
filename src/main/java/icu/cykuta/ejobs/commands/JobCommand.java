@@ -33,91 +33,109 @@ public class JobCommand implements CommandExecutor {
 
         Player player = (Player) sender;
         PlayerAdapter playerAdapter = Data.getPlayerAdapter(player);
+
         if (playerAdapter == null) playerAdapter = new PlayerAdapter(player);
 
         if (args.length < 1) return false;
 
-        // Arg Join logic
-        if (args[0].equalsIgnoreCase("join")) {
-            if (args.length != 2) return false;
-
-            Job job = Job.getJobFromName(args[1]);
-            if (job == null) {
-                playerAdapter.sendMessage("&cNo job with this name.");
-                return true;
-            }
-
-            if (playerAdapter.getJob() != null) {
-                playerAdapter.sendMessage("&cYou already have a job.");
-                return true;
-            }
-
-            Data.setPlayerJob(playerAdapter, job, 1);
-            playerAdapter.sendMessage("&aYou joined the job " + job.getName() + ".");
-            return true;
-        }
-
-        // Arg Leave logic
-        if (args[0].equalsIgnoreCase("leave")) {
-            if (args.length != 1) return false;
-
-            Job job = playerAdapter.getJob();
-
-            if (job == null) {
-                playerAdapter.sendMessage("&cYou are not in a job.");
-                return true;
-            }
-
-            Data.removePlayerJob(playerAdapter);
-            playerAdapter.sendMessage("&cYou left the job " + job.getName() + ".");
-            return true;
-        }
-
-        // Arg Levelup Logic
-        if (args[0].equalsIgnoreCase("levelup")) {
-            if (args.length != 1) return false;
-
-            Job job = playerAdapter.getJob();
-            int level = playerAdapter.getJobLevel();
-            int nextLevel = level + 1;
-
-            if (job == null) {
-                playerAdapter.sendMessage("&cYou are not in a job.");
-                return true;
-            }
-            if (!playerAdapter.canLevelUp()) {
-                playerAdapter.sendMessage("&cYour job level is already max.");
-                return true;
-            }
-
-            ArrayList<Requirement> requirements = playerAdapter.getJob().getRequirements().get(nextLevel);
-            playerAdapter.sendMessage("&7----------------------------------------");
-            if (!playerAdapter.verifyRequirements(nextLevel)) {
-                for (Requirement requirement : requirements) {
-                    CounterType type = requirement.getType();
-                    int amount = requirement.getAmount();
-                    String object = requirement.getObject();
-
-                    int current_amount = Data.getCounter(player, type, object);
-                    playerAdapter.sendMessage("&cYou need " + type + " " + current_amount + "/" + amount + " " + object + " to level up.");
-                }
-                return true;
-            }
-
-            for (Requirement requirement : requirements) {
-                CounterType type = requirement.getType();
-                int amount = requirement.getAmount();
-                String object = requirement.getObject();
-                int current_amount = Data.getCounter(player, type, object);
-                Data.setCounter(player, type, object, current_amount - amount);
-            }
-
-            playerAdapter.levelUp();
-            Data.savePlayerData(playerAdapter);
-            playerAdapter.sendMessage("&aYou have leveled up!");
-            return true;
+        switch (args[0]) {
+            case "join":
+                join(args, playerAdapter);
+                break;
+            case "leave":
+                leave(args, playerAdapter);
+                break;
+            case "levelup":
+                levelup(args, playerAdapter);
+                break;
+            default:
+                return false;
         }
 
         return true;
     }
+
+    public void join(String[] args, PlayerAdapter playerAdapter) {
+        if (args.length != 2) return;
+
+        Player player = playerAdapter.getPlayer();
+        Job job = Job.getJobFromName(args[1]);
+
+        if (job == null) {
+            playerAdapter.sendMessage("&cNo job with this name.");
+            return;
+        }
+
+        if (playerAdapter.getJob() != null) {
+            playerAdapter.sendMessage("&cYou already have a job.");
+            return;
+        }
+
+        if (!player.hasPermission(job.getPermission())) {
+            playerAdapter.sendMessage("&cYou not have permission to join this job.");
+            return;
+        }
+
+        Data.setPlayerJob(playerAdapter, job, 1);
+        playerAdapter.sendMessage("&aYou joined the job " + job.getName() + ".");
+    }
+
+    public void leave(String[] args, PlayerAdapter playerAdapter){
+        if (args.length != 1) return;
+
+        Job job = playerAdapter.getJob();
+
+        if (job == null) {
+            playerAdapter.sendMessage("&cYou are not in a job.");
+            return;
+        }
+
+        Data.removePlayerJob(playerAdapter);
+        playerAdapter.sendMessage("&cYou left the job " + job.getName() + ".");
+    }
+
+    public void levelup(String[] args, PlayerAdapter playerAdapter){
+        if (args.length != 1) return;
+
+        Player player = playerAdapter.getPlayer();
+        Job job = playerAdapter.getJob();
+        int level = playerAdapter.getJobLevel();
+        int nextLevel = level + 1;
+
+        if (job == null) {
+            playerAdapter.sendMessage("&cYou are not in a job.");
+            return;
+        }
+        if (!playerAdapter.canLevelUp()) {
+            playerAdapter.sendMessage("&cYour job level is already max.");
+            return;
+        }
+
+        ArrayList<Requirement> requirements = playerAdapter.getJob().getRequirements().get(nextLevel);
+        playerAdapter.sendMessage("&7----------------------------------------");
+        if (!playerAdapter.verifyRequirements(nextLevel)) {
+            for (Requirement requirement : requirements) {
+                CounterType type = requirement.getType();
+                int amount = requirement.getAmount();
+                String object = requirement.getObject();
+
+                int current_amount = Data.getCounter(player, type, object);
+                playerAdapter.sendMessage("&cYou need " + type + " " + current_amount + "/" + amount + " " + object + " to level up.");
+            }
+            return;
+        }
+
+        for (Requirement requirement : requirements) {
+            CounterType type = requirement.getType();
+            int amount = requirement.getAmount();
+            String object = requirement.getObject();
+            int current_amount = Data.getCounter(player, type, object);
+            Data.setCounter(player, type, object, current_amount - amount);
+        }
+
+        playerAdapter.levelUp();
+        Data.savePlayerData(playerAdapter);
+        playerAdapter.sendMessage("&aYou have leveled up!");
+    }
+
 }

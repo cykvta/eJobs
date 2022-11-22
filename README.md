@@ -9,6 +9,7 @@ with the possibility of level up and get custom permissions.
 - Custom job creation
 - Customizable levels
 - Requirements to level up
+- Customizable job permissions
 - Customized language file
 
 ## Installation
@@ -18,4 +19,3 @@ Download the latest build of the plugin and move it to the plugins folder on you
 - More counters
 - More configuration options
 - Command permissions
-- Customizable job permissions

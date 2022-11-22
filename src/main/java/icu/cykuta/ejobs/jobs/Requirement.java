@@ -1,25 +1,24 @@
 package icu.cykuta.ejobs.jobs;
 
 import icu.cykuta.ejobs.counters.CounterType;
-import org.bukkit.Material;
 
 public class Requirement {
-    private final CounterType counterType;
-    private final Material material;
+    private final CounterType type;
     private final int amount;
+    private final String object;
 
-    public Requirement(CounterType counterType, Material material, int amount) {
-        this.counterType = counterType;
-        this.material = material;
+    public Requirement(CounterType type, String object, int amount) {
+        this.type = type;
         this.amount = amount;
+        this.object = object;
     }
 
-    public CounterType getCounterType() {
-        return counterType;
+    public CounterType getType() {
+        return type;
     }
 
-    public Material getMaterial() {
-        return material;
+    public String getObject() {
+        return object;
     }
 
     public int getAmount() {

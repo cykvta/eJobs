@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Data {
     public static ArrayList<PlayerAdapter> playerHolder = new ArrayList<>();
@@ -22,35 +23,35 @@ public class Data {
      * Set value to a player's counter.
      * @param player Player
      * @param counterType Counter type
-     * @param material material string
+     * @param object material string
      * @param value int
      */
-    public static void setCounter(Player player, CounterType counterType, String material, int value){
+    public static void setCounter(Player player, CounterType counterType, String object, int value){
         ArrayList<Counter> counterList = counters.computeIfAbsent(player, k -> new ArrayList<>());
 
         for (Counter counter : counters.get(player)) {
-            if ( (counter.getType() == counterType) && (counter.getMaterial().equals(material)) ) {
+            if ( (counter.getType() == counterType) && (counter.getObject().equalsIgnoreCase(object)) ) {
                 counter.setValue(value);
                 return;
             }
         }
 
-        counterList.add(new Counter(counterType, material, value));
+        counterList.add(new Counter(counterType, object, value));
     }
 
     /**
      * Get value from a player's counter.
      * @param player player
-     * @param material material string
+     * @param object material string
      * @param counterType counter type
      * @return int
      */
-    public static int getCounter(Player player, String material, CounterType counterType){
+    public static int getCounter(Player player, CounterType counterType, String object){
         ArrayList<Counter> countersList = counters.get(player);
         if (countersList == null) return 0;
 
         for (Counter counter : countersList) {
-            if (counter.getType() == counterType && counter.getMaterial().equals(material)) {
+            if (counter.getType() == counterType && counter.getObject().equalsIgnoreCase(object)) {
                 return counter.getValue();
             }
         }
@@ -124,14 +125,14 @@ public class Data {
     /**
      * Get player counter on data.yml.
      * @param player player
-     * @param counter CounterType
+     * @param type CounterType
      * @return counter value or null
      */
-    public static int getCounterFromFile(Player player, CounterType counter, String materialString) {
+    public static int getCounterFromFile(Player player, CounterType type, String objectString) {
         String uuid = player.getPlayer().getUniqueId().toString();
         DataConfig dataFile = Main.getPlugin().getCfg().getDataConfig();
 
-        return dataFile.getData().getInt(uuid + ".counters." + counter + "." + materialString);
+        return dataFile.getData().getInt(uuid + ".counters." + type + "." + objectString.toUpperCase());
     }
 
     /**
@@ -175,8 +176,8 @@ public class Data {
             if (counters == null) continue;
 
             for (Counter counter : counters) {
-                String material = counter.getMaterial();
-                int value = Data.getCounter(player, material, type);
+                String material = counter.getObject();
+                int value = Data.getCounter(player, type, material);
                 Data.setCounterToFile(player, type, material, value);
             }
         }

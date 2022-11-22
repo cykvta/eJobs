@@ -5,7 +5,9 @@ import icu.cykuta.ejobs.counters.CounterType;
 import icu.cykuta.ejobs.file.ConfigManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.EntityType;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,16 +49,13 @@ public class JobLoader {
                 List<String> requirements = JobFile.getStringList("levels." + level + ".requirements");
                 for (String val : requirements) {
                     String[] req = val.split(":");
-                    String rawType      = req[0];
-                    String rawMaterial  = req[1];
-                    String rawValue     = req[2];
+                    String rawType   = req[0];
+                    String rawObject = req[1];
+                    String rawValue  = req[2];
 
                     CounterType reqType = CounterType.valueOf(rawType.toUpperCase());
                     int reqValue = Integer.parseInt(rawValue);
-                    Material reqMaterial = Material.getMaterial(rawMaterial.toUpperCase());
-
-                    Requirement requirement = new Requirement(reqType, reqMaterial, reqValue);
-                    levelRequirements.add(requirement);
+                    levelRequirements.add(new Requirement(reqType, rawObject, reqValue));
                 }
 
                 jobRequirements.put(level, levelRequirements);

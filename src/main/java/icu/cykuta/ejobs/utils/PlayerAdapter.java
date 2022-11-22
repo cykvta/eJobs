@@ -65,14 +65,18 @@ public class PlayerAdapter {
         return job.getMaxLevel() > jobLevel;
     }
 
+    /**
+     * Function to verify if player has all requirements completed.
+     */
     public boolean verifyRequirements(int level){
-        Log.info("Level: " + level);
         ArrayList<Requirement> requirements = job.getRequirements().get(level);
 
         for (Requirement requirement : requirements){
-            CounterType type = requirement.getCounterType();
-            String material = requirement.getMaterial().toString();
-            if (Data.getCounterFromFile(player, type, material) < requirement.getAmount()) return false;
+            CounterType type = requirement.getType();
+            String object = requirement.getObject();
+            int current = Data.getCounter(player, type, object);
+
+            if (current < requirement.getAmount()) return false;
         }
 
         return true;

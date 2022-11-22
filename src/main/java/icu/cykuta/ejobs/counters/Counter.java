@@ -2,12 +2,12 @@ package icu.cykuta.ejobs.counters;
 
 public class Counter {
     private final CounterType type;
-    private final String material;
+    private final String object;
     private int value;
 
-    public Counter(CounterType type, String material, int value) {
+    public Counter(CounterType type, String object, int value) {
         this.type = type;
-        this.material = material;
+        this.object = object;
         this.value = value;
     }
 
@@ -15,8 +15,8 @@ public class Counter {
         return type;
     }
 
-    public String getMaterial() {
-        return material;
+    public String getObject() {
+        return object;
     }
 
     public int getValue() {

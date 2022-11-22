@@ -1,4 +1,4 @@
-package icu.cykuta.ejobs.file.data;
+package icu.cykuta.ejobs.file.files;
 
 import icu.cykuta.ejobs.Main;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -6,11 +6,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
-public class DataConfig {
+public class DataFile {
     private final File file;
     private FileConfiguration config;
 
-    public DataConfig() {
+    public DataFile() {
         this.file = new File(Main.getPlugin().getDataFolder(), "data.yml");
         if (!file.exists()) create();
         load();

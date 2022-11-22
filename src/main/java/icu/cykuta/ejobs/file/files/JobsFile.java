@@ -1,4 +1,4 @@
-package icu.cykuta.ejobs.file.jobs;
+package icu.cykuta.ejobs.file.files;
 
 import icu.cykuta.ejobs.Main;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -6,11 +6,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.util.ArrayList;
 
-public class JobsConfig {
+public class JobsFile {
     private final File dir = new File(Main.getPlugin().getDataFolder() + "/jobs");
     private final ArrayList<YamlConfiguration> jobsList = new ArrayList<>();
 
-    public JobsConfig(){
+    public JobsFile(){
         this.load();
     }
 

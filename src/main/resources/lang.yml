@@ -1,0 +1,19 @@
+# GLOBAL
+global:
+  prefix: "&e[Jobs] "
+
+# ERROR MESSAGES
+error:
+  player-command: "&cThis command can only be executed by a player."
+  job-name-not-found: "&cNo job with this name."
+  already-have-job: "&cYou already have a job."
+  no-permission-job: "&cYou don't have permission to join this job."
+  already-joined-job: "&cYou already joined this job."
+  not-have-job: "&cYou are not in a job."
+  max-level-reached: "&cYou have reached the maximum level."
+
+# SUCCESS MESSAGES
+success:
+  join-job: "&aYou joined the job &e%job%&a."
+  leave-job: "&aYou left the job &e%job%&a."
+  level-up: "&aJob level up!"

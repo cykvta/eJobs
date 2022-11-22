@@ -9,12 +9,12 @@ with the possibility of level up and get custom permissions.
 - Custom job creation
 - Customizable levels
 - Requirements to level up
+- Customized language file
 
 ## Installation
 Download the latest build of the plugin and move it to the plugins folder on your server.
 
 ## Todo
-- Customized language file
 - More counters
 - More configuration options
 - Command permissions

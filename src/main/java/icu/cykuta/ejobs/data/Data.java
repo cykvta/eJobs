@@ -3,7 +3,7 @@ package icu.cykuta.ejobs.data;
 import icu.cykuta.ejobs.Main;
 import icu.cykuta.ejobs.counters.Counter;
 import icu.cykuta.ejobs.counters.CounterType;
-import icu.cykuta.ejobs.file.data.DataConfig;
+import icu.cykuta.ejobs.file.files.DataFile;
 import icu.cykuta.ejobs.jobs.Job;
 import icu.cykuta.ejobs.utils.PlayerAdapter;
 import org.bukkit.Bukkit;
@@ -93,7 +93,7 @@ public class Data {
         player.unsetJobPermissions();
         player.unsetJob();
         String uuid = player.getPlayer().getUniqueId().toString();
-        DataConfig dataFile = Main.getPlugin().getCfg().getDataConfig();
+        DataFile dataFile = Main.getPlugin().getCfg().getDataConfig();
 
         dataFile.getData().set(uuid + ".job", null);
         dataFile.getData().set(uuid + ".job-level", null);
@@ -107,7 +107,7 @@ public class Data {
      */
     public static void savePlayerData(PlayerAdapter player) {
         String uuid = player.getPlayer().getUniqueId().toString();
-        DataConfig dataFile = Main.getPlugin().getCfg().getDataConfig();
+        DataFile dataFile = Main.getPlugin().getCfg().getDataConfig();
 
         dataFile.getData().set(uuid + ".job", player.getJob().getName());
         dataFile.getData().set(uuid + ".job-level", player.getJobLevel());
@@ -122,7 +122,7 @@ public class Data {
      */
     public static void setCounterToFile(Player player, CounterType counterType, String material, int value) {
         String uuid = player.getPlayer().getUniqueId().toString();
-        DataConfig dataFile = Main.getPlugin().getCfg().getDataConfig();
+        DataFile dataFile = Main.getPlugin().getCfg().getDataConfig();
 
         dataFile.getData().set(uuid + ".counters." + counterType.toString() + "." + material, value == 0 ? null : value);
         dataFile.saveData();
@@ -136,7 +136,7 @@ public class Data {
      */
     public static int getCounterFromFile(Player player, CounterType type, String objectString) {
         String uuid = player.getPlayer().getUniqueId().toString();
-        DataConfig dataFile = Main.getPlugin().getCfg().getDataConfig();
+        DataFile dataFile = Main.getPlugin().getCfg().getDataConfig();
 
         return dataFile.getData().getInt(uuid + ".counters." + type + "." + objectString.toUpperCase());
     }
@@ -147,7 +147,7 @@ public class Data {
      */
     public static void clearDataFile(PlayerAdapter player) {
         String uuid = player.getPlayer().getUniqueId().toString();
-        DataConfig dataFile = Main.getPlugin().getCfg().getDataConfig();
+        DataFile dataFile = Main.getPlugin().getCfg().getDataConfig();
 
         dataFile.getData().set(uuid + ".counters" , null);
     }

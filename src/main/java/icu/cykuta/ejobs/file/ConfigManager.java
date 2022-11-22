@@ -1,27 +1,33 @@
 package icu.cykuta.ejobs.file;
 
-import icu.cykuta.ejobs.file.config.MainConfig;
-import icu.cykuta.ejobs.file.data.DataConfig;
-import icu.cykuta.ejobs.file.jobs.JobsConfig;
+import icu.cykuta.ejobs.file.files.ConfigFile;
+import icu.cykuta.ejobs.file.files.DataFile;
+import icu.cykuta.ejobs.file.files.JobsFile;
+import icu.cykuta.ejobs.file.files.LangFile;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.ArrayList;
 
 public class ConfigManager {
-    private final MainConfig mainConfig = new MainConfig();
-    private final JobsConfig jobsConfigList = new JobsConfig();
-    private final DataConfig dataConfig = new DataConfig();
+    private final ConfigFile configFile = new ConfigFile();
+    private final JobsFile jobsFileList = new JobsFile();
+    private final DataFile dataFile = new DataFile();
+    private final LangFile langFile = new LangFile();
 
     public FileConfiguration getMainConfig(){
-        return mainConfig.getConfig();
+        return configFile.getConfig();
     }
 
     public ArrayList<YamlConfiguration> getJobsConfig(){
-        return this.jobsConfigList.getJobsList();
+        return this.jobsFileList.getJobsList();
     }
 
-    public DataConfig getDataConfig(){
-        return dataConfig;
+    public DataFile getDataConfig(){
+        return dataFile;
+    }
+
+    public LangFile getLangFile(){
+        return langFile;
     }
 }

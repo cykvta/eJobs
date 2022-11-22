@@ -4,6 +4,7 @@ import icu.cykuta.ejobs.counters.CounterType;
 import icu.cykuta.ejobs.data.Data;
 import icu.cykuta.ejobs.jobs.Job;
 import icu.cykuta.ejobs.jobs.Requirement;
+import icu.cykuta.ejobs.utils.Lang;
 import icu.cykuta.ejobs.utils.Log;
 import icu.cykuta.ejobs.utils.PlayerAdapter;
 import org.bukkit.command.Command;
@@ -27,7 +28,7 @@ public class JobCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player)) {
-            Log.error("This command can only be executed by a player.");
+            Log.error(Lang.PLAYER_COMMAND_ERROR.value());
             return false;
         }
 
@@ -51,22 +52,22 @@ public class JobCommand implements CommandExecutor {
         Job job = Job.getJobFromName(args[1]);
 
         if (job == null) {
-            playerAdapter.sendMessage("&cNo job with this name.");
+            playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.JOB_NAME_NOT_FOUND.value());
             return true;
         }
 
         if (playerAdapter.getJob() != null) {
-            playerAdapter.sendMessage("&cYou already have a job.");
+            playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.ALREADY_HAVE_JOB.value());
             return true;
         }
 
         if (!player.hasPermission(job.getPermission())) {
-            playerAdapter.sendMessage("&cYou not have permission to join this job.");
+            playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.NO_PERMISSION_JOB.value());
             return true;
         }
 
         Data.setPlayerJob(playerAdapter, job, 1);
-        playerAdapter.sendMessage("&aYou joined the job " + job.getName() + ".");
+        playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.JOB_JOIN.value().replace("%job%", job.getName()));
         return true;
     }
 
@@ -76,7 +77,7 @@ public class JobCommand implements CommandExecutor {
         Job job = playerAdapter.getJob();
 
         if (job == null) {
-            playerAdapter.sendMessage("&cYou are not in a job.");
+            playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.NOT_HAVE_JOB.value());
             return true;
         }
 
@@ -84,7 +85,7 @@ public class JobCommand implements CommandExecutor {
         Data.removeCounters(playerAdapter);
         Data.clearDataFile(playerAdapter);
 
-        playerAdapter.sendMessage("&cYou left the job " + job.getName() + ".");
+        playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.JOB_LEAVE.value().replace("%job%", job.getName()));
         return true;
     }
 
@@ -97,11 +98,11 @@ public class JobCommand implements CommandExecutor {
         int nextLevel = level + 1;
 
         if (job == null) {
-            playerAdapter.sendMessage("&cYou are not in a job.");
+            playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.NOT_HAVE_JOB.value());
             return true;
         }
         if (!playerAdapter.canLevelUp()) {
-            playerAdapter.sendMessage("&cYour job level is already max.");
+            playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.MAX_LEVEL_REACHED.value());
             return true;
         }
 
@@ -129,7 +130,7 @@ public class JobCommand implements CommandExecutor {
 
         playerAdapter.levelUp();
         Data.savePlayerData(playerAdapter);
-        playerAdapter.sendMessage("&aYou have leveled up!");
+        playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.JOB_LEVEL_UP.value());
         return true;
     }
 

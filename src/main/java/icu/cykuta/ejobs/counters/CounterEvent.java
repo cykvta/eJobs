@@ -1,6 +1,7 @@
 package icu.cykuta.ejobs.counters;
 
 import icu.cykuta.ejobs.data.Data;
+import icu.cykuta.ejobs.utils.PlayerAdapter;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
@@ -25,6 +26,10 @@ public class CounterEvent implements Listener {
     @EventHandler
     public void playerBreakBlock(BlockBreakEvent e){
         Player player = e.getPlayer();
+        PlayerAdapter adapter = Data.getPlayerAdapter(player);
+
+        if (adapter.getJob() == null) return;
+
         Material blockType = e.getBlock().getType();
         CounterType counterType = CounterType.BREAK;
 
@@ -38,6 +43,10 @@ public class CounterEvent implements Listener {
     @EventHandler
     public void playerPlaceBlock(BlockPlaceEvent e){
         Player player = e.getPlayer();
+        PlayerAdapter adapter = Data.getPlayerAdapter(player);
+
+        if (adapter.getJob() == null) return;
+
         Material blockType = e.getBlock().getType();
         CounterType counterType = CounterType.PLACE;
 
@@ -51,6 +60,10 @@ public class CounterEvent implements Listener {
     @EventHandler
     public void playerCraftItem(CraftItemEvent e){
         Player player = (Player) e.getWhoClicked();
+        PlayerAdapter adapter = Data.getPlayerAdapter(player);
+
+        if (adapter.getJob() == null) return;
+
         Material itemType = e.getRecipe().getResult().getType();
         CounterType counterType = CounterType.CRAFT;
 
@@ -64,6 +77,10 @@ public class CounterEvent implements Listener {
     @EventHandler
     public void playerEnchantItem(EnchantItemEvent e){
         Player player = e.getEnchanter();
+        PlayerAdapter adapter = Data.getPlayerAdapter(player);
+
+        if (adapter.getJob() == null) return;
+
         Material itemType = e.getItem().getType();
         CounterType counterType = CounterType.ENCHANT;
 
@@ -77,7 +94,12 @@ public class CounterEvent implements Listener {
     @EventHandler
     public void playerKillEntity(EntityDeathEvent e){
         if (e.getEntity().getKiller() == null) return;
+
         Player player = e.getEntity().getKiller();
+        PlayerAdapter adapter = Data.getPlayerAdapter(player);
+
+        if (adapter.getJob() == null) return;
+
         Entity entity = e.getEntity();
         CounterType counterType = CounterType.KILL;
 
@@ -91,11 +113,16 @@ public class CounterEvent implements Listener {
     @EventHandler
     public void playerSmeltEvent(InventoryClickEvent e){
         if (!(e.getInventory() instanceof FurnaceInventory)) return;
+
+        Player player = (Player) e.getWhoClicked();
+        PlayerAdapter adapter = Data.getPlayerAdapter(player);
+
+        if (adapter.getJob() == null) return;
+
         FurnaceInventory inventory = (FurnaceInventory) e.getInventory();
         ItemStack itemResult = inventory.getResult();
 
         if (itemResult == null) return;
-        Player player = (Player) e.getWhoClicked();
         String result = itemResult.getType().toString();
         CounterType counterType = CounterType.SMELT;
         int amount = itemResult.getAmount();
@@ -110,13 +137,15 @@ public class CounterEvent implements Listener {
     @EventHandler
     public void playerFarmEvent(BlockBreakEvent e){
         Block block = e.getBlock();
+        Player player = e.getPlayer();
+        PlayerAdapter adapter = Data.getPlayerAdapter(player);
 
+        if (adapter.getJob() == null) return;
         if (!(block.getBlockData() instanceof Ageable)) return;
 
         Ageable bData = (Ageable) block.getBlockData();
         if (bData.getAge() != bData.getMaximumAge()) return;
 
-        Player player = e.getPlayer();
         String result = block.getType().toString();
         CounterType counterType = CounterType.FARM;
 

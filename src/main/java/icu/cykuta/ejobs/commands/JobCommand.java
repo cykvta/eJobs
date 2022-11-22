@@ -34,68 +34,62 @@ public class JobCommand implements CommandExecutor {
         Player player = (Player) sender;
         PlayerAdapter playerAdapter = Data.getPlayerAdapter(player);
 
-        if (playerAdapter == null) playerAdapter = new PlayerAdapter(player);
-
         if (args.length < 1) return false;
 
         switch (args[0]) {
-            case "join":
-                join(args, playerAdapter);
-                break;
-            case "leave":
-                leave(args, playerAdapter);
-                break;
-            case "levelup":
-                levelup(args, playerAdapter);
-                break;
-            default:
-                return false;
+            case "join": return join(args, playerAdapter);
+            case "leave": return leave(args, playerAdapter);
+            case "levelup": return levelUp(args, playerAdapter);
+            default: return false;
         }
-
-        return true;
     }
 
-    public void join(String[] args, PlayerAdapter playerAdapter) {
-        if (args.length != 2) return;
+    public boolean join(String[] args, PlayerAdapter playerAdapter) {
+        if (args.length != 2) return false;
 
         Player player = playerAdapter.getPlayer();
         Job job = Job.getJobFromName(args[1]);
 
         if (job == null) {
             playerAdapter.sendMessage("&cNo job with this name.");
-            return;
+            return true;
         }
 
         if (playerAdapter.getJob() != null) {
             playerAdapter.sendMessage("&cYou already have a job.");
-            return;
+            return true;
         }
 
         if (!player.hasPermission(job.getPermission())) {
             playerAdapter.sendMessage("&cYou not have permission to join this job.");
-            return;
+            return true;
         }
 
         Data.setPlayerJob(playerAdapter, job, 1);
         playerAdapter.sendMessage("&aYou joined the job " + job.getName() + ".");
+        return true;
     }
 
-    public void leave(String[] args, PlayerAdapter playerAdapter){
-        if (args.length != 1) return;
+    public boolean leave(String[] args, PlayerAdapter playerAdapter){
+        if (args.length != 1) return false;
 
         Job job = playerAdapter.getJob();
 
         if (job == null) {
             playerAdapter.sendMessage("&cYou are not in a job.");
-            return;
+            return true;
         }
 
         Data.removePlayerJob(playerAdapter);
+        Data.removeCounters(playerAdapter);
+        Data.clearDataFile(playerAdapter);
+
         playerAdapter.sendMessage("&cYou left the job " + job.getName() + ".");
+        return true;
     }
 
-    public void levelup(String[] args, PlayerAdapter playerAdapter){
-        if (args.length != 1) return;
+    public boolean levelUp(String[] args, PlayerAdapter playerAdapter){
+        if (args.length != 1) return false;
 
         Player player = playerAdapter.getPlayer();
         Job job = playerAdapter.getJob();
@@ -104,11 +98,11 @@ public class JobCommand implements CommandExecutor {
 
         if (job == null) {
             playerAdapter.sendMessage("&cYou are not in a job.");
-            return;
+            return true;
         }
         if (!playerAdapter.canLevelUp()) {
             playerAdapter.sendMessage("&cYour job level is already max.");
-            return;
+            return true;
         }
 
         ArrayList<Requirement> requirements = playerAdapter.getJob().getRequirements().get(nextLevel);
@@ -122,7 +116,7 @@ public class JobCommand implements CommandExecutor {
                 int current_amount = Data.getCounter(player, type, object);
                 playerAdapter.sendMessage("&cYou need " + type + " " + current_amount + "/" + amount + " " + object + " to level up.");
             }
-            return;
+            return true;
         }
 
         for (Requirement requirement : requirements) {
@@ -136,6 +130,7 @@ public class JobCommand implements CommandExecutor {
         playerAdapter.levelUp();
         Data.savePlayerData(playerAdapter);
         playerAdapter.sendMessage("&aYou have leveled up!");
+        return true;
     }
 
 }

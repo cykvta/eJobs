@@ -9,11 +9,9 @@ import icu.cykuta.ejobs.utils.PlayerAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class Data {
     public static ArrayList<PlayerAdapter> playerHolder = new ArrayList<>();
@@ -57,6 +55,14 @@ public class Data {
         }
 
         return 0;
+    }
+
+    /**
+     * Remove a player's counter.
+     * @param player
+     */
+    public static void removeCounters(PlayerAdapter player) {
+        counters.remove(player.getPlayer());
     }
 
     /**
@@ -136,16 +142,26 @@ public class Data {
     }
 
     /**
+     * Remove all data from data file
+     * @param player PlayerAdapter
+     */
+    public static void clearDataFile(PlayerAdapter player) {
+        String uuid = player.getPlayer().getUniqueId().toString();
+        DataConfig dataFile = Main.getPlugin().getCfg().getDataConfig();
+
+        dataFile.getData().set(uuid + ".counters" , null);
+    }
+
+    /**
      * Get PlayerAdapter from player.
      * @param player Player
      */
-    @Nullable
     public static PlayerAdapter getPlayerAdapter(Player player) {
         for (PlayerAdapter playerAdapter : playerHolder) {
             if (playerAdapter.getPlayer().equals(player)) return playerAdapter;
         }
 
-        return null;
+        return new PlayerAdapter(player);
     }
 
     /**

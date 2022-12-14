@@ -13,13 +13,17 @@ public class Job {
     private final String description;
     private final Map<Integer, List<String>> permissions;
     private final Map<Integer, ArrayList<Requirement> > requirements;
+    private final Map<Integer, Integer> levelCost;
     private final String permission;
 
-    public Job(String jobName, int maxLevel, String description, String permission, Map<Integer, List<String>> permissions, Map<Integer, ArrayList<Requirement> > requirements) {
+    public Job(String jobName, int maxLevel, String description, String permission,
+               Map<Integer, List<String>> permissions, Map<Integer, ArrayList<Requirement>> requirements,
+               Map<Integer, Integer> levelCost) {
         this.name = jobName;
         this.maxLevel = maxLevel;
         this.description = description;
         this.permission = permission;
+        this.levelCost = levelCost;
         this.permissions = permissions;
         this.requirements = requirements;
     }
@@ -46,6 +50,10 @@ public class Job {
 
     public String getPermission() {
         return permission;
+    }
+
+    public int getLevelCost(int level){
+        return levelCost.get(level);
     }
 
     /**

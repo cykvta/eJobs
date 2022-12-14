@@ -1,5 +1,6 @@
 package icu.cykuta.ejobs.commands;
 
+import icu.cykuta.ejobs.Main;
 import icu.cykuta.ejobs.counters.CounterType;
 import icu.cykuta.ejobs.data.Data;
 import icu.cykuta.ejobs.jobs.Job;
@@ -7,6 +8,7 @@ import icu.cykuta.ejobs.jobs.Requirement;
 import icu.cykuta.ejobs.utils.Lang;
 import icu.cykuta.ejobs.utils.Log;
 import icu.cykuta.ejobs.utils.PlayerAdapter;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -97,15 +99,31 @@ public class JobCommand implements CommandExecutor {
         int level = playerAdapter.getJobLevel();
         int nextLevel = level + 1;
 
+        // Check if player has a job.
         if (job == null) {
             playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.NOT_HAVE_JOB.value());
             return true;
         }
+
+        // Check if the player has reached the maximum level.
         if (!playerAdapter.canLevelUp()) {
             playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.MAX_LEVEL_REACHED.value());
             return true;
         }
 
+        // Check if the player has enough money to level up.
+        if (Main.getEconomy() != null) {
+            Economy econ = Main.getEconomy();
+            double Player_balance = econ.getBalance(player);
+            double cost = job.getLevelCost(nextLevel);
+
+            if (Player_balance < cost) {
+                playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.NOT_ENOUGH_MONEY.value());
+                return true;
+            }
+        }
+
+        // Check if the player has enough requirements to level up.
         ArrayList<Requirement> requirements = playerAdapter.getJob().getRequirements().get(nextLevel);
         playerAdapter.sendMessage("&7----------------------------------------");
         if (!playerAdapter.verifyRequirements(nextLevel)) {
@@ -120,6 +138,7 @@ public class JobCommand implements CommandExecutor {
             return true;
         }
 
+        // Level up the player.
         for (Requirement requirement : requirements) {
             CounterType type = requirement.getType();
             int amount = requirement.getAmount();

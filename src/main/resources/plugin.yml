@@ -3,6 +3,8 @@ version: '${project.version}'
 main: icu.cykuta.ejobs.Main
 api-version: 1.19
 authors: [ cykvta ]
+softdepend:
+  - Vault
 
 commands:
   job:

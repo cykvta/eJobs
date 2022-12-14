@@ -14,6 +14,7 @@ public enum Lang {
     NO_PERMISSION_JOB("error", "no-permission-job"),
     NOT_HAVE_JOB("error", "not-have-job"),
     MAX_LEVEL_REACHED("error", "max-level-reached"),
+    NOT_ENOUGH_MONEY("error", "not-enough-money"),
 
     //SUCCESS
     JOB_JOIN("success", "job-join"),

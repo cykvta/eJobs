@@ -11,7 +11,7 @@ error:
   already-joined-job: "&cYou already joined this job."
   not-have-job: "&cYou are not in a job."
   max-level-reached: "&cYou have reached the maximum level."
-
+  not-enough-money: "&cYou don't have enough money."
 # SUCCESS MESSAGES
 success:
   join-job: "&aYou joined the job &e%job%&a."

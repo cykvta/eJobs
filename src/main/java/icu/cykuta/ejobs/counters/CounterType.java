@@ -8,7 +8,7 @@ public enum CounterType {
     SMELT("smelt"),
     FARM("farm"),
     KILL("kill"),
-    BREW("brew");
+    MONEY("money");
 
     CounterType(String value) {
     }

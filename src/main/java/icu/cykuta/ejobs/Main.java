@@ -6,6 +6,8 @@ import icu.cykuta.ejobs.data.DataEvents;
 import icu.cykuta.ejobs.counters.CounterEvent;
 import icu.cykuta.ejobs.file.ConfigManager;
 import icu.cykuta.ejobs.jobs.JobLoader;
+import icu.cykuta.ejobs.utils.VaultConnector;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,11 +15,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class Main extends JavaPlugin {
     private ConfigManager cfg;
     private JobLoader jobLoader;
+    private static Economy econ = null;
 
     @Override
     public void onEnable() {
         cfg = new ConfigManager();
         jobLoader = new JobLoader();
+        econ = VaultConnector.setupEconomy();
         CommandLoader.loadCommands(this);
         loadEvents();
     }
@@ -40,6 +44,10 @@ public final class Main extends JavaPlugin {
 
     public JobLoader getJobLoader() {
         return jobLoader;
+    }
+
+    public static Economy getEconomy() {
+        return econ;
     }
 
     public static Main getPlugin() {

@@ -31,6 +31,7 @@ public class JobLoader {
 
             Map<Integer, List<String> > jobPermissions = new HashMap<>();
             Map<Integer, ArrayList<Requirement> > jobRequirements = new HashMap<>();
+            Map<Integer, Integer > jobLevelCost = new HashMap<>();
 
             // Grab all data in levels from the jobs file.
             for (String key : JobFile.getConfigurationSection("levels").getKeys(false)){
@@ -39,6 +40,10 @@ public class JobLoader {
                 // Get the permissions list for the level.
                 List<String> permissions = JobFile.getStringList("levels." + level + ".permissions");
                 jobPermissions.put(level, permissions);
+
+                // Get cost for the level.
+                int cost = JobFile.getInt("levels." + level + ".cost");
+                jobLevelCost.put(level, cost);
 
                 // Get the requirements for the level.
                 ArrayList<Requirement> levelRequirements = new ArrayList<>();
@@ -60,7 +65,7 @@ public class JobLoader {
             }
 
             // Create a new Job object and add it to the jobs list.
-            jobs.add( new Job(jobName, maxLevel, description, permission, jobPermissions, jobRequirements) );
+            jobs.add( new Job(jobName, maxLevel, description, permission, jobPermissions, jobRequirements, jobLevelCost) );
         }
     }
 

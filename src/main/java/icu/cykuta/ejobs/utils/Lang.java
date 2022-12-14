@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 public enum Lang {
     //GLOBAL
     PREFIX("global", "prefix"),
+
     //ERRORS
     PLAYER_COMMAND_ERROR("error", "player-command"),
     JOB_NAME_NOT_FOUND("error", "job-name-not-found"),

@@ -5,6 +5,7 @@ api-version: 1.19
 authors: [ cykvta ]
 softdepend:
   - Vault
+  - ItemsAdder
 
 commands:
   job:

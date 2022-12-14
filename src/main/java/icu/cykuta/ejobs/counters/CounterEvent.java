@@ -1,5 +1,8 @@
 package icu.cykuta.ejobs.counters;
 
+import dev.lone.itemsadder.api.CustomStack;
+import dev.lone.itemsadder.api.ItemsAdder;
+import icu.cykuta.ejobs.Main;
 import icu.cykuta.ejobs.data.Data;
 import icu.cykuta.ejobs.utils.PlayerAdapter;
 import org.bukkit.Material;
@@ -13,8 +16,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,11 +34,19 @@ public class CounterEvent implements Listener {
 
         if (adapter.getJob() == null) return;
 
-        Material blockType = e.getBlock().getType();
+        String blockType = e.getBlock().getType().toString();
         CounterType counterType = CounterType.BREAK;
 
+        // If the block is a custom block from ItemsAdder, get the custom block name.
+        if (Main.isItemsAdderLoaded()) {
+            ItemStack cBlock = ItemsAdder.getCustomBlock(e.getBlock());
+            if (cBlock == null || ItemsAdder.isCustomItem(cBlock)) {
+                blockType = CustomStack.byItemStack(cBlock).getId();
+            }
+        }
+
         int counter = Data.getCounter(player, counterType, blockType.toString());
-        Data.setCounter(player, counterType, blockType.toString(), counter+1);
+        Data.setCounter(player, counterType, blockType, counter+1);
     }
 
     /**
@@ -47,10 +59,10 @@ public class CounterEvent implements Listener {
 
         if (adapter.getJob() == null) return;
 
-        Material blockType = e.getBlock().getType();
+        String blockType = e.getBlock().getType().toString();
         CounterType counterType = CounterType.PLACE;
 
-        int counter = Data.getCounter(player, counterType, blockType.toString());
+        int counter = Data.getCounter(player, counterType, blockType);
         Data.setCounter(player, counterType, blockType.toString(), counter+1);
     }
 
@@ -58,17 +70,33 @@ public class CounterEvent implements Listener {
      * Player craft item counter
      */
     @EventHandler
-    public void playerCraftItem(CraftItemEvent e){
+    public void playerCraftItem(InventoryClickEvent e){
+        if (!(e.getInventory() instanceof CraftingInventory)) return;
+        if (e.getSlotType() != InventoryType.SlotType.RESULT) return;
+
+        CraftingInventory craftingInventory = (CraftingInventory) e.getInventory();
         Player player = (Player) e.getWhoClicked();
         PlayerAdapter adapter = Data.getPlayerAdapter(player);
 
         if (adapter.getJob() == null) return;
 
-        Material itemType = e.getRecipe().getResult().getType();
+        ItemStack item = craftingInventory.getResult();
+
+        if (item == null) return;
+
+        String itemType = item.getType().toString();
         CounterType counterType = CounterType.CRAFT;
 
-        int counter = Data.getCounter(player, counterType, itemType.toString());
-        Data.setCounter(player, counterType, itemType.toString(), counter+1);
+        // If the item is a custom item from ItemsAdder, get the custom item name.
+        if (Main.isItemsAdderLoaded()) {
+            CustomStack cItem = CustomStack.byItemStack(item);
+            if (cItem != null) {
+                itemType = cItem.getId();
+            }
+        }
+
+        int counter = Data.getCounter(player, counterType, itemType);
+        Data.setCounter(player, counterType, itemType, counter+1);
     }
 
     /**
@@ -113,6 +141,7 @@ public class CounterEvent implements Listener {
     @EventHandler
     public void playerSmeltEvent(InventoryClickEvent e){
         if (!(e.getInventory() instanceof FurnaceInventory)) return;
+        if (e.getSlotType() != InventoryType.SlotType.RESULT) return;
 
         Player player = (Player) e.getWhoClicked();
         PlayerAdapter adapter = Data.getPlayerAdapter(player);
@@ -120,15 +149,23 @@ public class CounterEvent implements Listener {
         if (adapter.getJob() == null) return;
 
         FurnaceInventory inventory = (FurnaceInventory) e.getInventory();
-        ItemStack itemResult = inventory.getResult();
+        ItemStack item = inventory.getResult();
 
-        if (itemResult == null) return;
-        String result = itemResult.getType().toString();
+        if (item == null) return;
+        String itemType = item.getType().toString();
         CounterType counterType = CounterType.SMELT;
-        int amount = itemResult.getAmount();
+        int amount = item.getAmount();
 
-        int counter = Data.getCounter(player, counterType, result);
-        Data.setCounter(player, counterType, result, counter + amount);
+        // If the item is a custom item from ItemsAdder, get the custom item name.
+        if (Main.isItemsAdderLoaded()) {
+            CustomStack cItem = CustomStack.byItemStack(item);
+            if (cItem != null) {
+                itemType = cItem.getId();
+            }
+        }
+
+        int counter = Data.getCounter(player, counterType, itemType);
+        Data.setCounter(player, counterType, itemType, counter + amount);
     }
 
     /**

@@ -12,8 +12,9 @@ error:
   not-have-job: "&cYou are not in a job."
   max-level-reached: "&cYou have reached the maximum level."
   not-enough-money: "&cYou don't have enough money."
+
 # SUCCESS MESSAGES
 success:
-  join-job: "&aYou joined the job &e%job%&a."
-  leave-job: "&aYou left the job &e%job%&a."
-  level-up: "&aJob level up!"
+  job-join: "&aYou joined the job &e%job%&a."
+  job-leave: "&aYou left the job &e%job%&a."
+  job-level-up: "&aJob level up!"

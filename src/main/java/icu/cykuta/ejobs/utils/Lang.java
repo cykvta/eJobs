@@ -19,7 +19,7 @@ public enum Lang {
 
     //SUCCESS
     JOB_JOIN("success", "job-join"),
-    JOB_LEAVE("success", "leave-job"),
+    JOB_LEAVE("success", "job-leave"),
     JOB_LEVEL_UP("success", "job-level-up"),;
 
     private final String path;

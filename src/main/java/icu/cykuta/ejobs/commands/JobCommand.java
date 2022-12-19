@@ -106,7 +106,7 @@ public class JobCommand implements CommandExecutor {
         }
 
         // Check if the player has reached the maximum level.
-        if (!playerAdapter.canLevelUp()) {
+        if (job.getMaxLevel() <= level) {
             playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.MAX_LEVEL_REACHED.value());
             return true;
         }

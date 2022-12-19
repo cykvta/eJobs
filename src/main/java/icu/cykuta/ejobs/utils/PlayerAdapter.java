@@ -58,14 +58,6 @@ public class PlayerAdapter {
     }
 
     /**
-     * Function to verify if player can level up.
-     */
-    public boolean canLevelUp() {
-        if (job == null) return false;
-        return job.getMaxLevel() > jobLevel;
-    }
-
-    /**
      * Function to verify if player has all requirements completed.
      */
     public boolean verifyRequirements(int level){

@@ -6,6 +6,7 @@ import icu.cykuta.ejobs.data.DataEvents;
 import icu.cykuta.ejobs.counters.CounterEvent;
 import icu.cykuta.ejobs.file.ConfigManager;
 import icu.cykuta.ejobs.jobs.JobLoader;
+import icu.cykuta.ejobs.utils.PapiConnector;
 import icu.cykuta.ejobs.utils.VaultConnector;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.Plugin;
@@ -18,6 +19,7 @@ public final class Main extends JavaPlugin {
     private JobLoader jobLoader;
     private static Economy econ = null;
     private static Plugin itemsAdder = null;
+    private static Plugin placeholderAPI = null;
 
     @Override
     public void onEnable() {
@@ -27,6 +29,7 @@ public final class Main extends JavaPlugin {
         // Setup soft dependencies
         econ = VaultConnector.setupEconomy();
         itemsAdder = getServer().getPluginManager().getPlugin("ItemsAdder");
+        placeholderAPI = getServer().getPluginManager().getPlugin("PlaceholderAPI");
 
         CommandLoader.loadCommands(this);
         loadEvents();
@@ -42,6 +45,11 @@ public final class Main extends JavaPlugin {
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new DataEvents(), this);
         pm.registerEvents(new CounterEvent(), this);
+
+        // Register PAPI placeholders
+        if (placeholderAPI != null) {
+            new PapiConnector().register();
+        }
     }
 
     public ConfigManager getCfg() {

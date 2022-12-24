@@ -6,6 +6,7 @@ authors: [ cykvta ]
 softdepend:
   - Vault
   - ItemsAdder
+  - PlaceholderAPI
 
 commands:
   job:

@@ -16,6 +16,12 @@ public enum Lang {
     NOT_HAVE_JOB("error", "not-have-job"),
     MAX_LEVEL_REACHED("error", "max-level-reached"),
     NOT_ENOUGH_MONEY("error", "not-enough-money"),
+    NOT_ENOUGH_REQUIREMENTS("error", "not-enough-requirements"),
+
+    // INFO
+    JOB_REQUIREMENTS("info", "job-requirements"),
+    JOB_REQUIREMENTS_STATUS_OK("info", "job-requirements-status-ok"),
+    JOB_REQUIREMENTS_STATUS_NOT_OK("info", "job-requirements-status-not-ok"),
 
     //SUCCESS
     JOB_JOIN("success", "job-join"),

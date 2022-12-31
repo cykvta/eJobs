@@ -43,6 +43,7 @@ public class JobCommand implements CommandExecutor {
             case "join": return join(args, playerAdapter);
             case "leave": return leave(args, playerAdapter);
             case "levelup": return levelUp(args, playerAdapter);
+            case "requirements": return requirements(args, playerAdapter);
             default: return false;
         }
     }
@@ -125,20 +126,12 @@ public class JobCommand implements CommandExecutor {
 
         // Check if the player has enough requirements to level up.
         ArrayList<Requirement> requirements = playerAdapter.getJob().getRequirements().get(nextLevel);
-        playerAdapter.sendMessage("&7----------------------------------------");
-        if (!playerAdapter.verifyRequirements(nextLevel)) {
-            for (Requirement requirement : requirements) {
-                CounterType type = requirement.getType();
-                int amount = requirement.getAmount();
-                String object = requirement.getObject();
-
-                int current_amount = Data.getCounter(player, type, object);
-                playerAdapter.sendMessage("&cYou need " + type + " " + current_amount + "/" + amount + " " + object + " to level up.");
-            }
+        if (playerAdapter.verifyRequirements(level)) {
+            playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.NOT_ENOUGH_REQUIREMENTS.value());
             return true;
         }
 
-        // Level up the player.
+        // Take away requirements of the player.
         for (Requirement requirement : requirements) {
             CounterType type = requirement.getType();
             int amount = requirement.getAmount();
@@ -147,9 +140,47 @@ public class JobCommand implements CommandExecutor {
             Data.setCounter(player, type, object, current_amount - amount);
         }
 
+        // Level up the player.
         playerAdapter.levelUp();
         Data.savePlayerData(playerAdapter);
         playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.JOB_LEVEL_UP.value());
+        return true;
+    }
+
+    public boolean requirements(String[] args, PlayerAdapter playerAdapter) {
+        if (args.length != 1) return false;
+
+        if (playerAdapter.getJob() == null) {
+            playerAdapter.sendMessage(Lang.PREFIX.value() + Lang.NOT_HAVE_JOB.value());
+            return true;
+        }
+
+        Player player = playerAdapter.getPlayer();
+        int level = playerAdapter.getJobLevel();
+        int nextLevel = level + 1;
+        ArrayList<Requirement> requirements = playerAdapter.getJob().getRequirements().get(nextLevel);
+
+        if (!playerAdapter.verifyRequirements(nextLevel)) {
+            for (Requirement requirement : requirements) {
+                CounterType type = requirement.getType();
+                int amount = requirement.getAmount();
+                String object = requirement.getObject();
+
+                int current_amount = Data.getCounter(player, type, object);
+                String msg = Lang.JOB_REQUIREMENTS.value()
+                        .replace("%type%", type.toString())
+                        .replace("%amount%", String.valueOf(amount))
+                        .replace("%object%", object)
+                        .replace("%current_amount%", String.valueOf(current_amount));
+
+                String status = current_amount >= amount ?
+                        Lang.JOB_REQUIREMENTS_STATUS_OK.value() : Lang.JOB_REQUIREMENTS_STATUS_NOT_OK.value();
+
+                playerAdapter.sendMessage(Lang.PREFIX.value() + status + msg);
+            }
+            return true;
+        }
+
         return true;
     }
 

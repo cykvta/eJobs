@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class JobLoader {
 
-    private final ArrayList<Job> jobs = new ArrayList<>();
+    private static final ArrayList<Job> jobs = new ArrayList<>();
 
     /**
      * Load all jobs from config file and store
@@ -73,7 +73,7 @@ public class JobLoader {
      * Get the list of jobs.
      * @return ArrayList<Job>
      */
-    public ArrayList<Job> getJobs(){
+    public static ArrayList<Job> getJobs(){
         return jobs;
     }
 }

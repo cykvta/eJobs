@@ -11,4 +11,4 @@ softdepend:
 commands:
   job:
     description: job command
-    usage: /job <join/leave/levelup> <job>
+    usage: /job <join/leave/levelup/requirements> <job>

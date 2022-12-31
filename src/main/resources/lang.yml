@@ -12,6 +12,13 @@ error:
   not-have-job: "&cYou are not in a job."
   max-level-reached: "&cYou have reached the maximum level."
   not-enough-money: "&cYou don't have enough money."
+  not-enough-requirements: "&cYou don't have completed the requirements."
+
+# INFO MESSAGES
+info:
+  job-requirements: "You need %type% %current_amount% / %amount% %object% to level up."
+  job-requirements-status-ok: "&a[✓] "
+  job-requirements-status-not-ok: "&c[✕] "
 
 # SUCCESS MESSAGES
 success:

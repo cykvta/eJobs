@@ -17,6 +17,7 @@ public enum Lang {
     MAX_LEVEL_REACHED("error", "max-level-reached"),
     NOT_ENOUGH_MONEY("error", "not-enough-money"),
     NOT_ENOUGH_REQUIREMENTS("error", "not-enough-requirements"),
+    NO_COMMAND_PERMISSION("error", "no-command-permission"),
 
     // INFO
     JOB_REQUIREMENTS("info", "job-requirements"),
@@ -26,7 +27,9 @@ public enum Lang {
     //SUCCESS
     JOB_JOIN("success", "job-join"),
     JOB_LEAVE("success", "job-leave"),
-    JOB_LEVEL_UP("success", "job-level-up"),;
+    JOB_LEVEL_UP("success", "job-level-up"),
+
+    ;
 
     private final String path;
     private final String type;

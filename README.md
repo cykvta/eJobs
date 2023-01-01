@@ -14,6 +14,7 @@ with the possibility of level up and get custom permissions.
 - PlaceholderAPI expansion
 - Vault economy support
 - ItemsAdder items support
+- Command permissions
 
 ## Installation
 Download the latest build of the plugin and move it to the plugins folder on your server.
@@ -21,11 +22,18 @@ Download the latest build of the plugin and move it to the plugins folder on you
 ## Todo
 - More counters
 - More configuration options
-- Command permissions
 
 ## Placeholders
 ``` css
 %ejobs_job_name%
 %ejobs_job_level%
 %ejobs_job_description%
+```
+
+## Permissions
+``` css
+ejobs.join
+ejobs.leave
+ejobs.requirements
+ejobs.levelup
 ```

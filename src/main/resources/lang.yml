@@ -13,6 +13,7 @@ error:
   max-level-reached: "&cYou have reached the maximum level."
   not-enough-money: "&cYou don't have enough money."
   not-enough-requirements: "&cYou don't have completed the requirements."
+  no-command-permission: "&cYou don't have permission to execute this command."
 
 # INFO MESSAGES
 info:

@@ -1,6 +1,6 @@
 package icu.cykuta.ejobs;
 
-import icu.cykuta.ejobs.commands.CommandLoader;
+import icu.cykuta.ejobs.commands.BaseCommand;
 import icu.cykuta.ejobs.data.Data;
 import icu.cykuta.ejobs.data.DataEvents;
 import icu.cykuta.ejobs.counters.CounterEvent;
@@ -31,8 +31,8 @@ public final class Main extends JavaPlugin {
         itemsAdder = getServer().getPluginManager().getPlugin("ItemsAdder");
         placeholderAPI = getServer().getPluginManager().getPlugin("PlaceholderAPI");
 
-        CommandLoader.loadCommands(this);
         loadEvents();
+        this.getServer().getCommandMap().register("job", new BaseCommand());
     }
 
     @Override

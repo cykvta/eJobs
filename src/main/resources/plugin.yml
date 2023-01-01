@@ -7,8 +7,3 @@ softdepend:
   - Vault
   - ItemsAdder
   - PlaceholderAPI
-
-commands:
-  job:
-    description: job command
-    usage: /job <join/leave/levelup/requirements> <job>

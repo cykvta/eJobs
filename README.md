@@ -22,6 +22,8 @@ Download the latest build of the plugin and move it to the plugins folder on you
 ## Todo
 - More counters
 - More configuration options
+- Better data storage system
+- Refactor some things
 
 ## Placeholders
 ``` css

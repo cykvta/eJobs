@@ -9,6 +9,8 @@ import icu.cykuta.ejobs.jobs.JobLoader;
 import icu.cykuta.ejobs.utils.PapiConnector;
 import icu.cykuta.ejobs.utils.VaultConnector;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,7 +34,17 @@ public final class Main extends JavaPlugin {
         placeholderAPI = getServer().getPluginManager().getPlugin("PlaceholderAPI");
 
         loadEvents();
-        this.getServer().getCommandMap().register("job", new BaseCommand());
+        CommandMap commandMap = getCommandMap();
+        commandMap.register("ejobs", new BaseCommand());
+    }
+
+    private CommandMap getCommandMap() {
+        try {
+            return (CommandMap) Bukkit.getServer().getClass().getDeclaredMethod("getCommandMap").invoke(Bukkit.getServer());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
